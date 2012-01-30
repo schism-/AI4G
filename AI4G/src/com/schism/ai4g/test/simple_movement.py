@@ -15,8 +15,12 @@ class SimpleObject2D(object):
     def __init__(self, kin, sprite_no):
         
         self.kinematics = kin
-        self.sprite = sprite_loader.get_sprite("../../../../../resources/images/test-sprites.png", sprite_no, (80, 80))
-      
+        #self.sprite = sprite_loader.get_sprite("../../../../../resources/images/test-sprites.png", sprite_no, (80, 80))
+        
+        sprite_surface = pygame.Surface((100, 100)).convert_alpha()
+        pygame.draw.rect(sprite_surface, (255, 255, 255), (0,0,100, 100), 5)
+        pygame.draw.line(sprite_surface, (255, 255, 255), (50,50 ), (100, 50), 3 )
+        self.sprite = sprite_surface
       
 def print_GUI(screen_surface, offset, font, obj, steering):
     
@@ -53,10 +57,10 @@ if __name__ == "__main__":
     
     initial_position = [ randint(1, 300), randint(1, 300) ]
     initial_orientation = 1
-    initial_velocity = [ randint(1, 15), randint(1, 15) ]
+    initial_velocity = [ 10, 10 ]
     initial_rotation = 0
     
-    steering = SteeringOutput2D( [10, -5], 1)
+    steering = SteeringOutput2D( [10, 5], 0)
     kin = Kinematics2D(initial_position, initial_orientation, initial_velocity, initial_rotation)
     
     obj = SimpleObject2D(kin, 5)
@@ -74,7 +78,8 @@ if __name__ == "__main__":
                 
         screen.fill((127,127,127))
         
-        screen.blit( obj.sprite, (obj.kinematics.position) )
+        new_sprite = pygame.transform.rotate(obj.sprite, obj.kinematics.orientation % 360.0)
+        screen.blit( new_sprite, (obj.kinematics.position) )
         
         print_GUI(screen, [10, 10], font, obj, steering)
         

@@ -5,6 +5,8 @@ Created on 08/gen/2012
 '''
 
 import steering_output2d
+import math
+
 
 class Kinematics2D(object):
     '''
@@ -30,12 +32,23 @@ class Kinematics2D(object):
         self.position[0] += self.velocity[0] * time_passed + 0.5 * steering.linear[0] * time_passed * time_passed
         self.position[1] += self.velocity[1] * time_passed + 0.5 * steering.linear[1] * time_passed * time_passed
         
-        self.orientation += self.rotation * time_passed + 0.5 * steering.angular * time_passed * time_passed
+        #self.orientation += self.rotation * time_passed + 0.5 * steering.angular * time_passed * time_passed
+        self.orientation = self.get_orientation()
         
         self.velocity[0] += steering.linear[0] * time_passed
         self.velocity[1] += steering.linear[1] * time_passed
         
         self.rotation += steering.angular * time_passed
+    
+    def get_orientation(self):
+        lenght = math.sqrt(self.velocity[0]*self.velocity[0] + self.velocity[1]*self.velocity[1])
+        if (lenght >= 0):
+            #return math.atan2( -self.velocity[0], self.velocity[1] )
+            cos_alpha = self.velocity[0] / lenght
+            print "Cos alpha: " + str(cos_alpha)
+            return -math.degrees(math.acos( cos_alpha ))
+        print "Derp"
+        return self.orientation
     
     def set_position(self, new_pos):
         self.position[0] = new_pos[0]
