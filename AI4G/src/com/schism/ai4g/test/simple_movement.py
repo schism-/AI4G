@@ -9,6 +9,7 @@ import com.schism.ai4g.util.sprite_loader as sprite_loader
 from com.schism.ai4g.movement.kinematics2d import Kinematics2D
 from random import randint
 from com.schism.ai4g.movement.steering_output2d import SteeringOutput2D
+from com.schism.ai4g.util.vector2d import Vector2
 
 class SimpleObject2D(object):
     
@@ -17,9 +18,9 @@ class SimpleObject2D(object):
         self.kinematics = kin
         #self.sprite = sprite_loader.get_sprite("../../../../../resources/images/test-sprites.png", sprite_no, (80, 80))
         
-        sprite_surface = pygame.Surface((100, 100)).convert_alpha()
-        pygame.draw.rect(sprite_surface, (255, 255, 255), (0,0,100, 100), 5)
-        pygame.draw.line(sprite_surface, (255, 255, 255), (50,50 ), (100, 50), 3 )
+        sprite_surface = pygame.Surface((50, 50)).convert_alpha()
+        pygame.draw.rect(sprite_surface, (255, 255, 255), (0, 0, 50, 50), 5)
+        pygame.draw.line(sprite_surface, (255, 0, 0), (25, 25), (50, 25), 3 )
         self.sprite = sprite_surface
       
 def print_GUI(screen_surface, offset, font, obj, steering):
@@ -29,7 +30,7 @@ def print_GUI(screen_surface, offset, font, obj, steering):
                    ["Y Position", int(obj.kinematics.position[1])],
                    ["Orientation", obj.kinematics.orientation],
                    ["X Velocity", obj.kinematics.velocity[0]],
-                   ["X Position", obj.kinematics.velocity[1]],
+                   ["Y Velocity", obj.kinematics.velocity[1]],
                    ["Rotation", obj.kinematics.rotation],
                    ["X acceleration", steering.linear[0]],
                    ["Y acceleration", steering.linear[1]],
@@ -55,12 +56,12 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode( SCREEN_SIZE, 0 , 32 )
     font = pygame.font.SysFont("arial", 14)
     
-    initial_position = [ randint(1, 300), randint(1, 300) ]
-    initial_orientation = 1
-    initial_velocity = [ 10, 10 ]
+    initial_position = Vector2( randint(1, 300), randint(1, 300) )
+    initial_orientation = 0
+    initial_velocity = Vector2( 0, 0 )
     initial_rotation = 0
     
-    steering = SteeringOutput2D( [10, 5], 0)
+    steering = SteeringOutput2D( Vector2(0, 0), 3)
     kin = Kinematics2D(initial_position, initial_orientation, initial_velocity, initial_rotation)
     
     obj = SimpleObject2D(kin, 5)
@@ -74,12 +75,12 @@ if __name__ == "__main__":
                 
             if (event.type == pygame.MOUSEBUTTONDOWN) and (event.button == 1) :
                 obj.kinematics.set_position( event.pos )
-                obj.kinematics.set_velocity( [ randint(1, 15), randint(1, 15) ] )
+                obj.kinematics.set_velocity( Vector2(randint(1, 15), randint(1, 15)) )
                 
         screen.fill((127,127,127))
         
         new_sprite = pygame.transform.rotate(obj.sprite, obj.kinematics.orientation % 360.0)
-        screen.blit( new_sprite, (obj.kinematics.position) )
+        screen.blit( new_sprite, (obj.kinematics.position[0], obj.kinematics.position[1]) )
         
         print_GUI(screen, [10, 10], font, obj, steering)
         

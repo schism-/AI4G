@@ -6,6 +6,8 @@ Created on 08/gen/2012
 
 import steering_output2d
 import math
+from com.schism.ai4g.movement.static2d import Static2D
+from com.schism.ai4g.util.vector2d import Vector2
 
 
 class Kinematics2D(object):
@@ -13,7 +15,7 @@ class Kinematics2D(object):
     Stores and manages information about position and motion of an object in a 2D world. 
     '''
 
-    def __init__(self, p, o, v, r):
+    def __init__(self, p = Vector2(0., 0.), o = 0, v = Vector2(0., 0.), r = 0):
         '''
         Constructor
         '''
@@ -41,14 +43,14 @@ class Kinematics2D(object):
         self.rotation += steering.angular * time_passed
     
     def get_orientation(self):
-        lenght = math.sqrt(self.velocity[0]*self.velocity[0] + self.velocity[1]*self.velocity[1])
-        if (lenght >= 0):
-            #return math.atan2( -self.velocity[0], self.velocity[1] )
+        lenght = self.velocity.length()
+        if (lenght > 0):
             cos_alpha = self.velocity[0] / lenght
-            print "Cos alpha: " + str(cos_alpha)
             return -math.degrees(math.acos( cos_alpha ))
-        print "Derp"
         return self.orientation
+    
+    def get_static(self):
+        return Static2D( self.position, self.orientation)
     
     def set_position(self, new_pos):
         self.position[0] = new_pos[0]

@@ -3,6 +3,7 @@ Created on 08/gen/2012
 
 @author: Christian
 '''
+from com.schism.ai4g.util.vector2d import Vector2
 
 class SteeringOutput2D(object):
     '''
@@ -10,7 +11,7 @@ class SteeringOutput2D(object):
     '''
 
 
-    def __init__(self, linear, angular):
+    def __init__(self, linear = Vector2(0., 0.), angular = 0):
         '''
         Constructor
         '''
