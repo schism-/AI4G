@@ -45,8 +45,11 @@ def checkBoundaries( obj, SCREEN_SIZE = (100, 100) ):
 if __name__ == "__main__":
     
     #World objects
-    char = SimpleObject2D(kin = Kinematics2D(),  colour = (255, 255, 0))
-    target = SimpleObject2D(kin = Kinematics2D(), colour = (255, 110, 0))
+    kin_char = Kinematics2D( Vector2(), 0, Vector2(), 0)
+    char = SimpleObject2D( kin_char, colour = (255, 255, 0))
+    
+    tar_char = Kinematics2D( Vector2(), 0, Vector2(), 0)
+    target = SimpleObject2D( tar_char, colour = (255, 0, 0))
     
     steering = SteeringOutput2D( Vector2(0, 0), 3)
     
@@ -65,11 +68,14 @@ if __name__ == "__main__":
                 elif (event.button == 3) :
                     print "*** RIGHT PRESSED ***"
                     target.kinematics.set_position( event.pos )
-                    target.kinematics.set_velocity( Vector2(randint(1, 15), randint(1, 15)) )
+                    target.kinematics.set_velocity( Vector2() )
+                    #===========================================================
+                    # print "Char position: ({0}, {1})".format(char.kinematics.position[0], char.kinematics.position[1])
+                    # print "Target position: ({0}, {1})".format(target.kinematics.position[0], target.kinematics.position[1])
+                    # print "---------------------------"
+                    #===========================================================
                 
         screen.fill((127,127,127))
-        
-        print "Char position: ({0}, {1})".format(char.kinematics.position[0], char.kinematics.position[1])
         
         screen.blit( char.sprite, (char.kinematics.position[0], char.kinematics.position[1]) )
         screen.blit( target.sprite, (target.kinematics.position[0], target.kinematics.position[1]) )

@@ -4,11 +4,10 @@ Created on 31/gen/2012
 @author: Christian
 '''
 from com.schism.ai4g.movement.kinematic_steering_output2d import KinematicSteeringOutput2D
-from com.schism.ai4g.movement.static2d import Static2D
 
 class KinematicSeek(object):
 
-    def __init__(self, character = Static2D(), target = Static2D(), max_speed = 0.):
+    def __init__(self, character, target, max_speed = 0.):
         '''
         Constructor
         '''

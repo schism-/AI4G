@@ -15,7 +15,7 @@ class Kinematics2D(object):
     Stores and manages information about position and motion of an object in a 2D world. 
     '''
 
-    def __init__(self, p = Vector2(0., 0.), o = 0, v = Vector2(0., 0.), r = 0):
+    def __init__(self, p, o, v, r):
         '''
         Constructor
         '''
