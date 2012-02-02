@@ -55,8 +55,8 @@ if __name__ == "__main__":
     
     steering = SteeringOutput2D( Vector2(0, 0), 3)
     
-    seek = KinematicSeek( char.kinematics.get_static(), target.kinematics.get_static(), 50 )
-    flee = KinematicFlee( char.kinematics.get_static(), target.kinematics.get_static(), 30 )
+    seek = KinematicSeek( char.kinematics.get_static(), target.kinematics.get_static(), 50, 50 )
+    #flee = KinematicFlee( char.kinematics.get_static(), target.kinematics.get_static(), 30 )
     
     while True:
         
@@ -92,7 +92,7 @@ if __name__ == "__main__":
         seconds_passed = main_clock.tick(100) / 1000.0
         
         char.kinematics.kinematic_update( seek.get_steering(), seconds_passed)
-        target.kinematics.kinematic_update( flee.get_steering(), seconds_passed)
+        #target.kinematics.kinematic_update( flee.get_steering(), seconds_passed)
         
         checkBoundaries(char, SCREEN_SIZE)
         checkBoundaries(target, SCREEN_SIZE)

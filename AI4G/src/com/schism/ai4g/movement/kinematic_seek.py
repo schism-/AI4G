@@ -7,7 +7,7 @@ from com.schism.ai4g.movement.kinematic_steering_output2d import KinematicSteeri
 
 class KinematicSeek(object):
 
-    def __init__(self, character, target, max_speed = 0., radius):
+    def __init__(self, character, target, max_speed = 0., radius = 0):
         '''
         Constructor
         '''
@@ -18,15 +18,28 @@ class KinematicSeek(object):
         
         self.max_speed = max_speed
         self.radius = radius
+        self.time_to_target = 0.25
         
         
     def get_steering(self):
         
         steering = KinematicSteeringOutput2D()
-
+        
         steering.velocity = self.target.position - self.character.position
-        steering.velocity = steering.velocity.normalize()
-        steering.velocity *= self.max_speed
+        
+        if steering.velocity.length() < self.radius:
+            steering.velocity[0] = 0.
+            steering.velocity[1] = 0.
+            steering.rotation = 0.
+            return steering
+        
+        steering.velocity /= self.time_to_target
+        
+        print steering.velocity.to_string()
+        
+        if steering.velocity.length() > self.max_speed:
+            steering.velocity.normalize()
+            steering.velocity *= self.max_speed
         
         steering.rotation = 0
         

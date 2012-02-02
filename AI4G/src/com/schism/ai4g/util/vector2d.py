@@ -75,4 +75,5 @@ class Vector2(object):
             return Vector2(0., 0.)
         return self / self.length()
     
-    
+    def to_string(self):
+        print "X: %f    Y: %f    LENGTH: %f" % ( self[0], self[1], self.length() )
