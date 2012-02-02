@@ -54,9 +54,10 @@ class Kinematics2D(object):
         self.position[0] += self.velocity[0] * time_passed
         self.position[1] += self.velocity[1] * time_passed
         
-        self.orientation = self.get_orientation()
-        
         self.rotation = steering.rotation
+        
+        #self.orientation = self.get_orientation()
+        self.orientation += self.rotation * time_passed
     
     def get_orientation(self):
         '''
@@ -65,7 +66,6 @@ class Kinematics2D(object):
         lenght = self.velocity.length()
         if (lenght > 0):
             cos_alpha = self.velocity[0] / lenght
-            #return -math.degrees(math.acos( cos_alpha ))
             return -math.degrees(math.atan2(self.velocity[1], self.velocity[0]))
         return self.orientation
     

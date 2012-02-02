@@ -56,7 +56,7 @@ if __name__ == "__main__":
     
     steering = SteeringOutput2D( Vector2(0, 0), 3)
     
-    seek = KinematicSeek( char.kinematics.get_static(), target.kinematics.get_static(), 100, 70 )
+    seek = KinematicSeek( char.kinematics.get_static(), target.kinematics.get_static(), 150, 70 )
     #flee = KinematicFlee( char.kinematics.get_static(), target.kinematics.get_static(), 30 )
     
     while True:
