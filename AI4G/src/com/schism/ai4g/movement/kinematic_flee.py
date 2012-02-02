@@ -1,13 +1,13 @@
 '''
-Created on 31/gen/2012
+Created on 02/feb/2012
 
 @author: Christian
 '''
 from com.schism.ai4g.movement.kinematic_steering_output2d import KinematicSteeringOutput2D
 
-class KinematicSeek(object):
+class KinematicFlee(object):
 
-    def __init__(self, character, target, max_speed = 0., radius):
+    def __init__(self, character, target, max_speed = 0.):
         '''
         Constructor
         '''
@@ -17,16 +17,14 @@ class KinematicSeek(object):
         self.target = target
         
         self.max_speed = max_speed
-        self.radius = radius
-        
         
     def get_steering(self):
         
         steering = KinematicSteeringOutput2D()
 
-        steering.velocity = self.target.position - self.character.position
+        steering.velocity = self.character.position - self.target.position
         steering.velocity = steering.velocity.normalize()
-        steering.velocity *= self.max_speed
+        steering.velocity *= -self.max_speed
         
         steering.rotation = 0
         

@@ -9,6 +9,8 @@ from com.schism.ai4g.movement.kinematics2d import Kinematics2D
 from com.schism.ai4g.util.vector2d import Vector2
 from random import randint
 from com.schism.ai4g.movement.steering_output2d import SteeringOutput2D
+from com.schism.ai4g.movement.kinematic_seek import KinematicSeek
+from com.schism.ai4g.movement.kinematic_flee import KinematicFlee
 
 class SimpleObject2D(object):
     
@@ -45,13 +47,16 @@ def checkBoundaries( obj, SCREEN_SIZE = (100, 100) ):
 if __name__ == "__main__":
     
     #World objects
-    kin_char = Kinematics2D( Vector2(), 0, Vector2(), 0)
+    kin_char = Kinematics2D( Vector2(50, 50), 0, Vector2(), 0)
     char = SimpleObject2D( kin_char, colour = (255, 255, 0))
     
-    tar_char = Kinematics2D( Vector2(), 0, Vector2(), 0)
-    target = SimpleObject2D( tar_char, colour = (255, 0, 0))
+    kin_tar = Kinematics2D( Vector2(150, 50), 0, Vector2(), 0)
+    target = SimpleObject2D( kin_tar, colour = (255, 0, 0))
     
     steering = SteeringOutput2D( Vector2(0, 0), 3)
+    
+    seek = KinematicSeek( char.kinematics.get_static(), target.kinematics.get_static(), 50 )
+    flee = KinematicFlee( char.kinematics.get_static(), target.kinematics.get_static(), 30 )
     
     while True:
         
@@ -64,7 +69,7 @@ if __name__ == "__main__":
                 if (event.button == 1) :
                     print "*** LEFT PRESSED ***"
                     char.kinematics.set_position( event.pos )
-                    char.kinematics.set_velocity( Vector2(randint(1, 15), randint(1, 15)) )
+                    char.kinematics.set_velocity( Vector2(randint(-15, 15), randint(-15, 15)) )
                 elif (event.button == 3) :
                     print "*** RIGHT PRESSED ***"
                     target.kinematics.set_position( event.pos )
@@ -77,13 +82,17 @@ if __name__ == "__main__":
                 
         screen.fill((127,127,127))
         
-        screen.blit( char.sprite, (char.kinematics.position[0], char.kinematics.position[1]) )
-        screen.blit( target.sprite, (target.kinematics.position[0], target.kinematics.position[1]) )
+        char_sprite = pygame.transform.rotate(char.sprite, char.kinematics.orientation)
+        screen.blit( char_sprite, (char.kinematics.position[0] - int(char.sprite.get_width()/2), char.kinematics.position[1] - int(char.sprite.get_height()/2) ) )
+        
+        tar_sprite = pygame.transform.rotate(target.sprite, target.kinematics.orientation)
+        screen.blit( tar_sprite, (target.kinematics.position[0] - int(target.sprite.get_width()/2), target.kinematics.position[1] - int(target.sprite.get_height()/2) ) )
+        
         
         seconds_passed = main_clock.tick(100) / 1000.0
         
-        char.kinematics.update(steering, seconds_passed)
-        target.kinematics.update(steering, seconds_passed)
+        char.kinematics.kinematic_update( seek.get_steering(), seconds_passed)
+        target.kinematics.kinematic_update( flee.get_steering(), seconds_passed)
         
         checkBoundaries(char, SCREEN_SIZE)
         checkBoundaries(target, SCREEN_SIZE)

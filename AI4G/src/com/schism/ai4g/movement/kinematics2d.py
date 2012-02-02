@@ -42,11 +42,31 @@ class Kinematics2D(object):
         
         self.rotation += steering.angular * time_passed
     
+    def kinematic_update(self, steering, time_passed):
+        '''
+        Updates the information of the object given a KinematicSteeringOutput object (which represents
+        both velocity and rotation of the object) and the time passed since last update.
+        '''
+        
+        self.velocity[0] = steering.velocity[0]
+        self.velocity[1] = steering.velocity[1]
+        
+        self.position[0] += self.velocity[0] * time_passed
+        self.position[1] += self.velocity[1] * time_passed
+        
+        self.orientation = self.get_orientation()
+        
+        self.rotation = steering.rotation
+    
     def get_orientation(self):
+        '''
+        Calculates the orientation of an object standing only on its velocity vector
+        '''
         lenght = self.velocity.length()
         if (lenght > 0):
             cos_alpha = self.velocity[0] / lenght
-            return -math.degrees(math.acos( cos_alpha ))
+            #return -math.degrees(math.acos( cos_alpha ))
+            return -math.degrees(math.atan2(self.velocity[1], self.velocity[0]))
         return self.orientation
     
     def get_static(self):
