@@ -19,7 +19,8 @@ class SimpleObject2D(object):
         self.kinematics = kin
         
         sprite_surface = pygame.Surface((50, 50)).convert_alpha()
-        pygame.draw.rect(sprite_surface, colour, (0, 0, 50, 50), 5)
+        pygame.draw.circle(sprite_surface, colour, (25, 25), 25, 3)
+        #pygame.draw.rect(sprite_surface, colour, (0, 0, 50, 50), 5)
         pygame.draw.line(sprite_surface, colour, (25, 25), (50, 25), 3 )
         self.sprite = sprite_surface
 
@@ -55,7 +56,7 @@ if __name__ == "__main__":
     
     steering = SteeringOutput2D( Vector2(0, 0), 3)
     
-    seek = KinematicSeek( char.kinematics.get_static(), target.kinematics.get_static(), 50, 50 )
+    seek = KinematicSeek( char.kinematics.get_static(), target.kinematics.get_static(), 100, 70 )
     #flee = KinematicFlee( char.kinematics.get_static(), target.kinematics.get_static(), 30 )
     
     while True:

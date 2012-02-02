@@ -18,7 +18,7 @@ class KinematicSeek(object):
         
         self.max_speed = max_speed
         self.radius = radius
-        self.time_to_target = 0.25
+        self.time_to_target = 1.2
         
         
     def get_steering(self):
@@ -35,10 +35,8 @@ class KinematicSeek(object):
         
         steering.velocity /= self.time_to_target
         
-        print steering.velocity.to_string()
-        
         if steering.velocity.length() > self.max_speed:
-            steering.velocity.normalize()
+            steering.velocity = steering.velocity.normalize()
             steering.velocity *= self.max_speed
         
         steering.rotation = 0
