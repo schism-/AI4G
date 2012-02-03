@@ -25,7 +25,7 @@ class Kinematics2D(object):
         self.velocity = v       # 2-Dimensional Float Vector
         self.rotation = r       # Single Float Value
         
-    def update(self, steering, time_passed):
+    def update(self, steering, max_speed, time_passed):
         '''
         Updates the information of the object given a SteeringOutput object (which represents
         both linear and angular acceleration) and the time passed since last update.
@@ -34,13 +34,17 @@ class Kinematics2D(object):
         self.position[0] += self.velocity[0] * time_passed + 0.5 * steering.linear[0] * time_passed * time_passed
         self.position[1] += self.velocity[1] * time_passed + 0.5 * steering.linear[1] * time_passed * time_passed
         
-        #self.orientation += self.rotation * time_passed + 0.5 * steering.angular * time_passed * time_passed
-        self.orientation = self.get_orientation()
+        self.orientation += self.rotation * time_passed + 0.5 * steering.angular * time_passed * time_passed
+        #self.orientation = self.get_orientation()
         
         self.velocity[0] += steering.linear[0] * time_passed
         self.velocity[1] += steering.linear[1] * time_passed
         
         self.rotation += steering.angular * time_passed
+    
+        if self.velocity.length() > max_speed:
+            self.velocity = self.velocity.normalize()
+            self.velocity *= max_speed
     
     def kinematic_update(self, steering, time_passed):
         '''

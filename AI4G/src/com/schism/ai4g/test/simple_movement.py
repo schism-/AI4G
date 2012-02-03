@@ -61,7 +61,7 @@ if __name__ == "__main__":
     initial_velocity = Vector2( 0, 0 )
     initial_rotation = 0
     
-    steering = SteeringOutput2D( Vector2(0, 0), 3)
+    steering = SteeringOutput2D( Vector2(0, 0), 0)
     kin = Kinematics2D(initial_position, initial_orientation, initial_velocity, initial_rotation)
     
     obj = SimpleObject2D(kin, 5)
@@ -85,7 +85,7 @@ if __name__ == "__main__":
         print_GUI(screen, [10, 10], font, obj, steering)
         
         seconds_passed = main_clock.tick(100) / 1000.0
-        obj.kinematics.update(steering, seconds_passed)
+        obj.kinematics.update(steering, 100.,  seconds_passed)
         
         if obj.kinematics.position[0] < 0:
             obj.kinematics.position[0] = SCREEN_SIZE[0]
